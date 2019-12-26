@@ -14,7 +14,7 @@
 00000000 ulib.c
 00000000 printf.c
 00000630 printint
-00000a68 digits.1038
+00000a68 digits.1040
 00000000 umalloc.c
 00000e00 freep
 00000e04 base
@@ -44,6 +44,7 @@
 0000061a uptime
 00000e00 __bss_start
 000003e0 memset
+00000622 recursiveCall
 00000000 main
 000000b0 matchstar
 00000360 strcmp

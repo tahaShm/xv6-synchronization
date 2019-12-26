@@ -532,3 +532,13 @@ procdump(void)
     cprintf("\n");
   }
 }
+int counter = 0;
+int
+recursiveCall(void)
+{
+  if (counter < 3){
+    cprintf("iteration %d\n", counter);
+    return recursiveCall();
+  }
+  else return 1;
+}
