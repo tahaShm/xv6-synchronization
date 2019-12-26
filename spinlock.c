@@ -8,7 +8,7 @@
 #include "mmu.h"
 #include "proc.h"
 #include "spinlock.h"
-
+int curLockPid = -1;
 void
 initlock(struct spinlock *lk, char *name)
 {
@@ -24,14 +24,24 @@ initlock(struct spinlock *lk, char *name)
 void
 acquire(struct spinlock *lk)
 {
+  int flag = 0;
   pushcli(); // disable interrupts to avoid deadlock.
-  if(holding(lk))
-    panic("acquire");
+  // cprintf("pid is : %d\n", lk->pid);
 
+  if (holding(lk)) {
+    if (myproc()->pid != curLockPid) {
+      panic("acquire");
+    }
+    else
+    {
+      flag = 1;
+    }
+  }
   // The xchg is atomic.
-  while(xchg(&lk->locked, 1) != 0)
-    ;
+  if (flag == 0)
+    while(xchg(&lk->locked, 1) != 0);
 
+  // curLockPid = myproc()->pid;
   // Tell the C compiler and the processor to not move loads or stores
   // past this point, to ensure that the critical section's memory
   // references happen after the lock is acquired.
@@ -40,6 +50,8 @@ acquire(struct spinlock *lk)
   // Record info about lock acquisition for debugging.
   lk->cpu = mycpu();
   getcallerpcs(&lk, lk->pcs);
+  if (flag == 1)
+    popcli();
 }
 
 // Release the lock.

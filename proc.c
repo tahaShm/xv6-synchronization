@@ -532,13 +532,19 @@ procdump(void)
     cprintf("\n");
   }
 }
-int counter = 0;
+
+int counter = 3;
+
 int
 recursiveCall(void)
 {
-  if (counter < 3){
-    cprintf("iteration %d\n", counter);
+  acquire(&ptable.lock);
+  if (counter > 0) {
+    cprintf("iteration %d\n", counter--);
     return recursiveCall();
   }
-  else return 1;
+  else { 
+    release(&ptable.lock);
+    return 1;
+  }
 }
