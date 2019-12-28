@@ -174,7 +174,7 @@
 80106147 vector144
 8010666f vector254
 80101440 readsb
-8010a008 nextpid
+8010a004 nextpid
 80105f94 vector101
 8010646b vector211
 80103040 mpinit
@@ -276,7 +276,7 @@
 80105ebc vector77
 80101510 ialloc
 801062f7 vector180
-80115644 kpgdir
+80115664 kpgdir
 80106447 vector208
 80102810 cmostime
 80105c00 uartintr
@@ -285,7 +285,7 @@
 801062c7 vector176
 8010639f vector194
 80105d27 vector32
-80115648 end
+80115668 end
 801063db vector199
 801060ab vector131
 80106657 vector252
@@ -321,7 +321,7 @@
 80105d54 vector37
 80106423 vector205
 80106213 vector161
-80114e00 tickslock
+80114e20 tickslock
 801033f0 pipewrite
 801046b0 strncpy
 80105e86 vector71
@@ -353,7 +353,7 @@
 80104400 acquire
 8010651f vector226
 80101f00 nameiparent
-8010a004 counter
+80112ec0 counter
 80105dc0 vector49
 80105d93 vector44
 80112800 lapic
@@ -399,7 +399,7 @@
 80105da5 vector46
 801060cf vector134
 801064fb vector223
-80114e40 idt
+80114e60 idt
 801064bf vector218
 80103720 pinit
 80106c70 deallocuvm
@@ -414,7 +414,7 @@
 801000d0 bread
 8010607e vector127
 80103500 piperead
-80115640 ticks
+80115660 ticks
 80106387 vector192
 8010624f vector166
 801009c0 consoleinit
@@ -476,10 +476,10 @@
 80106a80 loaduvm
 80105faf vector104
 8010601b vector116
-80112ec0 ptable
+80112ee0 ptable
 801022d0 ioapicenable
 80104370 popcli
-8010a00c vectors
+8010a008 vectors
 80105ddb vector52
 80105ca2 vector17
 80106327 vector184

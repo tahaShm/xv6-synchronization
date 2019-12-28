@@ -533,7 +533,7 @@ procdump(void)
   }
 }
 
-int counter = 3;
+int counter;
 
 int recursive(void) {
   acquire(&ptable.lock);
@@ -551,9 +551,10 @@ int recursive(void) {
 int
 recursiveCall(void) {
   int out = 0;
+  counter = 5;
   ptable.lock.pid = myproc()->pid;
   out = recursive();
-  ptable.lock.pid = -1;
+  // ptable.lock.pid = -1;
   return out;
 }
 
