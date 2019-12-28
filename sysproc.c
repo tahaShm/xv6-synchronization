@@ -95,3 +95,15 @@ sys_recursiveCall(void)
 {
   return recursiveCall();
 }
+
+int
+sys_initBarrier() {
+
+  return 0;
+}
+
+int
+sys_barrier() {
+
+  return 0;
+}

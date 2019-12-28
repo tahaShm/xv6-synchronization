@@ -24,6 +24,8 @@ char* sbrk(int);
 int sleep(int);
 int uptime(void);
 int recursiveCall(void);
+int initBarrier(void);
+int barrier(void);
 
 // ulib.c
 int stat(const char*, struct stat*);

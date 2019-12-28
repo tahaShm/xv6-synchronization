@@ -556,3 +556,13 @@ recursiveCall(void) {
   ptable.lock.pid = -1;
   return out;
 }
+
+int initBarrier() {
+  
+  return 0;
+}
+
+int barrier() {
+
+  return 0;
+}

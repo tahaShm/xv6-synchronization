@@ -121,6 +121,8 @@ int             wait(void);
 void            wakeup(void*);
 void            yield(void);
 int             recursiveCall(void);
+int             initBarrier();
+int             barrier();
 
 // swtch.S
 void            swtch(struct context**, struct context*);
