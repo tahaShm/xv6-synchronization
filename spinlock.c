@@ -8,13 +8,14 @@
 #include "mmu.h"
 #include "proc.h"
 #include "spinlock.h"
-int curLockPid = -1;
+
 void
 initlock(struct spinlock *lk, char *name)
 {
   lk->name = name;
   lk->locked = 0;
   lk->cpu = 0;
+  // lk->pid = myproc()->pid;
 }
 
 // Acquire the lock.
@@ -29,11 +30,10 @@ acquire(struct spinlock *lk)
   // cprintf("pid is : %d\n", lk->pid);
 
   if (holding(lk)) {
-    if (myproc()->pid != curLockPid) {
+    if (myproc()->pid != lk->pid) {
       panic("acquire");
     }
-    else
-    {
+    else {
       flag = 1;
     }
   }

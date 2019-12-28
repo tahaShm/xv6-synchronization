@@ -18,8 +18,6 @@
 00000000 umalloc.c
 00000a5c freep
 00000a60 base
-00000000 
-00000a5c _GLOBAL_OFFSET_TABLE_
 00000080 strcpy
 00000420 printf
 000002a0 memmove

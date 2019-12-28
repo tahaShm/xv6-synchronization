@@ -535,16 +535,24 @@ procdump(void)
 
 int counter = 3;
 
-int
-recursiveCall(void)
-{
+int recursive(void) {
   acquire(&ptable.lock);
   if (counter > 0) {
     cprintf("iteration %d\n", counter--);
-    return recursiveCall();
+    return recursive();
   }
   else { 
     release(&ptable.lock);
     return 1;
   }
+}
+
+
+int
+recursiveCall(void) {
+  int out = 0;
+  ptable.lock.pid = myproc()->pid;
+  out = recursive();
+  ptable.lock.pid = -1;
+  return out;
 }
