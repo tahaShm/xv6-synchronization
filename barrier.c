@@ -2,29 +2,51 @@
 #include "stat.h"
 #include "user.h"
 
-int main (int argc, char* argv[]) {
-    // initBarrier();
-    // barrier();
-    int pid;
-    int delay = 10000000;
-    pid = fork();
+int fib(int n) {
+    if (n == 0 || n == 1)
+        return 1;
+    else 
+        return(fib(n - 1) + fib(n - 2));
+}
 
+int main (int argc, char* argv[]) {
+    int pid;
+
+    initBarrier();
+
+    pid = fork();
     if (pid > 0) {
         pid = fork();
         if (pid > 0) {
+
             pid = fork();
             if (pid > 0) {
+    
                 pid = fork();
+                if (pid == 0) {
+                    fib(15);
+                    barrier();
+                }
             }
-            else while (delay > 0)
-                delay--;
+            else  {
+                fib(22);
+                barrier();
+            }
         }
-        else while (delay > 0)
-            delay--;
+        else  {
+            fib(18);
+            barrier();
+        }
     }
-    else while (delay > 0)
-        delay--;
+    else {
+        fib(7);
+        barrier();
+        
+    }
 
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 4; i++)
         wait();
+    // barrier();
+
+    exit();
 }

@@ -104,6 +104,5 @@ sys_initBarrier() {
 
 int
 sys_barrier() {
-
-  return 0;
+  return barrier();
 }

@@ -563,7 +563,69 @@ int initBarrier() {
   return 0;
 }
 
-int barrier() {
+int barrierPids[4] = {0};
+struct spinlock barrierLock;
 
-  return 0;
+int barrier() {
+  cprintf("sabere koooooooooooooooooooooooooooooni\n");
+  int i = 0, curPid = myproc()->pid;
+  for (i = 0; i < 4; i++)
+    if (barrierPids[i] == 0) {
+      cprintf("kir %d\n", i);
+      barrierPids[i] = curPid;
+      break;
+    }
+  if (i < 3) {
+    cprintf("fuck %d\n", i);
+    acquire(&barrierLock);
+    sleep(barrierPids, &(barrierLock));
+    release(&barrierLock);
+    cprintf("ajab\n");
+  }  
+  else {
+    cprintf("be kiram %d\n", i);
+    wakeup(barrierPids);
+  }
+  return 1;
 }
+
+// int barrierPids[4] = {0};
+// int barrier() {
+//   int isFull = 1, i = 0, curPid = myproc()->pid;
+//   for (i = 0; i < 4; i++)
+//     if (barrierPids[i] == 0) {
+//       isFull = 0;
+//       barrierPids[i] = curPid;
+//       // for (int o = 0; o < NPROC; o++)
+//       //   cprintf("o is : %d pid : %d\n", o, ptable.proc[o].pid);
+//       // cprintf("cur pid is : %d\n", curPid);
+//       break;
+//     }
+//   if (i == 3 && !isFull) {
+//     acquire(&ptable.lock);
+//     // myproc()->state = SLEEPING;
+//     release(&ptable.lock);
+//     barrier();
+//     return 0;
+//   }
+//   if (isFull) {
+//     acquire(&ptable.lock);
+//     for (int j = 0; j < 4; j++) 
+//       for (int k = 0; k < NPROC; k++) { 
+//         cprintf("ptable : %d barrier : %d\n", ptable.proc[k].pid, barrierPids[j]);
+//         if (ptable.proc[k].pid == barrierPids[j]) {
+//           // if (ptable.proc[k].state == SLEEPING)
+//           //   ptable.proc[k].state = RUNNABLE;
+//           break;
+//         }
+//       }
+//     release(&ptable.lock);
+//   }
+//   else {
+//     acquire(&ptable.lock);
+//     // if (myproc()->state == RUNNING)
+//     //   myproc()->state = SLEEPING;
+//     release(&ptable.lock);
+//   }
+//   return 0;
+// }
