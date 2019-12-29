@@ -594,6 +594,9 @@ int barrier() {
     wakeup(barrierPids);
     for (int o = 0; o < MAXBARRIERS; o++)
       cprintf("Process with pid %d is waken up at clock %d\n", barrierPids[o], uptime());
+    
+    for (int o = 0; o < MAXBARRIERS; o++)
+      barrierPids[o] = 0;
   }
   return 1;
 }
