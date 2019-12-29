@@ -1,6 +1,9 @@
 #include "types.h"
 #include "stat.h"
 #include "user.h"
+#include "date.h"
+
+#define MAXBARRIERS 10
 
 int fib(int n) {
     if (n == 0 || n == 1)
@@ -10,43 +13,19 @@ int fib(int n) {
 }
 
 int main (int argc, char* argv[]) {
-    int pid;
+    int pid, idx = 0;
 
-    initBarrier();
-
-    pid = fork();
-    if (pid > 0) {
+    for (idx = 0; idx < MAXBARRIERS - 1; idx++) {
         pid = fork();
-        if (pid > 0) {
-
-            pid = fork();
-            if (pid > 0) {
-    
-                pid = fork();
-                if (pid == 0) {
-                    fib(15);
-                    barrier();
-                }
-            }
-            else  {
-                fib(22);
-                barrier();
-            }
-        }
-        else  {
-            fib(18);
-            barrier();
-        }
-    }
-    else {
-        fib(7);
-        barrier();
-        
+        if (pid == 0)
+            break;
     }
 
-    for (int i = 0; i < 4; i++)
+    fib(idx * 4);
+    barrier();
+
+    for (int i = 0; i < MAXBARRIERS - 1; i++)
         wait();
-    // barrier();
 
     exit();
 }

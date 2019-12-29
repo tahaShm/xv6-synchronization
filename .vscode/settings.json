@@ -1,6 +1,9 @@
 {
     "files.associations": {
         "defs.h": "c",
-        "proc.h": "c"
+        "proc.h": "c",
+        "param.h": "c",
+        "time.h": "c",
+        "user.h": "c"
     }
 }

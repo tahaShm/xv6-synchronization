@@ -460,8 +460,9 @@ wakeup1(void *chan)
   struct proc *p;
 
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
-    if(p->state == SLEEPING && p->chan == chan)
+    if(p->state == SLEEPING && p->chan == chan) {
       p->state = RUNNABLE;
+    }
 }
 
 // Wake up all processes sleeping on chan.
@@ -538,7 +539,7 @@ int counter;
 int recursive(void) {
   acquire(&ptable.lock);
   if (counter > 0) {
-    cprintf("iteration %d\n", counter--);
+    cprintf("Acquired for %dth time\n", 5 - (counter--) + 1);
     return recursive();
   }
   else { 
@@ -554,78 +555,45 @@ recursiveCall(void) {
   counter = 5;
   ptable.lock.pid = myproc()->pid;
   out = recursive();
-  // ptable.lock.pid = -1;
   return out;
 }
+
+int
+uptime(void)
+{
+  uint xticks;
+
+  acquire(&tickslock);
+  xticks = ticks;
+  release(&tickslock);
+  return xticks;
+}
+
+int barrierPids[MAXBARRIERS] = {0};
+struct spinlock barrierLock;
 
 int initBarrier() {
   
   return 0;
 }
 
-int barrierPids[4] = {0};
-struct spinlock barrierLock;
-
 int barrier() {
-  cprintf("sabere koooooooooooooooooooooooooooooni\n");
   int i = 0, curPid = myproc()->pid;
-  for (i = 0; i < 4; i++)
+  for (i = 0; i < MAXBARRIERS; i++)
     if (barrierPids[i] == 0) {
-      cprintf("kir %d\n", i);
       barrierPids[i] = curPid;
       break;
     }
-  if (i < 3) {
-    cprintf("fuck %d\n", i);
+  if (i < MAXBARRIERS - 1) {
     acquire(&barrierLock);
+    cprintf("Process with pid %d is set to sleep at clock %d\n", curPid, uptime());
     sleep(barrierPids, &(barrierLock));
     release(&barrierLock);
-    cprintf("ajab\n");
   }  
   else {
-    cprintf("be kiram %d\n", i);
     wakeup(barrierPids);
+    for (int o = 0; o < MAXBARRIERS; o++)
+      cprintf("Process with pid %d is waken up at clock %d\n", barrierPids[o], uptime());
   }
   return 1;
 }
-
-// int barrierPids[4] = {0};
-// int barrier() {
-//   int isFull = 1, i = 0, curPid = myproc()->pid;
-//   for (i = 0; i < 4; i++)
-//     if (barrierPids[i] == 0) {
-//       isFull = 0;
-//       barrierPids[i] = curPid;
-//       // for (int o = 0; o < NPROC; o++)
-//       //   cprintf("o is : %d pid : %d\n", o, ptable.proc[o].pid);
-//       // cprintf("cur pid is : %d\n", curPid);
-//       break;
-//     }
-//   if (i == 3 && !isFull) {
-//     acquire(&ptable.lock);
-//     // myproc()->state = SLEEPING;
-//     release(&ptable.lock);
-//     barrier();
-//     return 0;
-//   }
-//   if (isFull) {
-//     acquire(&ptable.lock);
-//     for (int j = 0; j < 4; j++) 
-//       for (int k = 0; k < NPROC; k++) { 
-//         cprintf("ptable : %d barrier : %d\n", ptable.proc[k].pid, barrierPids[j]);
-//         if (ptable.proc[k].pid == barrierPids[j]) {
-//           // if (ptable.proc[k].state == SLEEPING)
-//           //   ptable.proc[k].state = RUNNABLE;
-//           break;
-//         }
-//       }
-//     release(&ptable.lock);
-//   }
-//   else {
-//     acquire(&ptable.lock);
-//     // if (myproc()->state == RUNNING)
-//     //   myproc()->state = SLEEPING;
-//     release(&ptable.lock);
-//   }
-//   return 0;
-// }
